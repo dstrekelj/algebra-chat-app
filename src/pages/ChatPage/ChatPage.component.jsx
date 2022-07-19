@@ -5,10 +5,12 @@ import { Message } from "../../components/Message";
 import { MessageForm } from "../../components/MessageForm";
 import { useUser } from "../../contexts/UserContext";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export function ChatPage() {
   const { user } = useUser();
   const [state, setState] = useState([]);
+  const [drone, setDrone] = useState(null);
 
   const sendMessage = (formState) => {
     const message = new MessageModel({
@@ -16,8 +18,38 @@ export function ChatPage() {
       user,
     });
 
+    if (drone !== null) {
+      drone.publish({
+        room: 'chat',
+        message: message
+      });
+    }
+
     setState((state) => [ ...state, message ]);
   }
+
+  useEffect(() => {
+    if (drone !== null) return;
+    // eslint-disable-next-line no-undef
+    setDrone(new Scaledrone('aC1vqpO2aEavkoXU'));
+  }, [drone, setDrone]);
+
+  useEffect(() => {
+    if (drone === null) return;
+
+    const room = drone.subscribe('chat');
+
+    room.on('open', error => {
+      if (error) {
+        return console.error(error);
+      }
+      console.log('Connected to room');
+    });
+  
+    room.on('message', message => {
+      console.log('Message received', message);
+    });
+  }, [drone]);
 
   const messageItems = state.map((message, index) => (
     <div key={index} className="chat-page__message-list-item">
