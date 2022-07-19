@@ -24,14 +24,11 @@ export function ChatPage() {
         message: message
       });
     }
-
-    setState((state) => [ ...state, message ]);
   }
 
   useEffect(() => {
     if (drone !== null) return;
-    // eslint-disable-next-line no-undef
-    setDrone(new Scaledrone('aC1vqpO2aEavkoXU'));
+    setDrone(new window.Scaledrone('aC1vqpO2aEavkoXU'));
   }, [drone, setDrone]);
 
   useEffect(() => {
@@ -48,6 +45,11 @@ export function ChatPage() {
   
     room.on('message', message => {
       console.log('Message received', message);
+
+      setState((state) => [
+        ...state,
+        MessageModel.fromObject(message.data)
+      ]);
     });
   }, [drone]);
 
