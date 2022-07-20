@@ -4,9 +4,7 @@ Real-time chat application using JavaScript, React, SCSS, and Scaledrone.
 
 Developed as part of Algebra's Frontend developer course.
 
-<a href="https://dstrekelj-algebra-chat-app.netlify.app/" target="_blank">
-  <strong>Try me on Netlify</strong>
-</a>
+[**Try me on Netlify**](https://dstrekelj-algebra-chat-app.netlify.app/)
 
 ---
 
